@@ -36,7 +36,6 @@ jobs:
     name: Winget - Update package manifest in the OWC
     needs:
      - set-version-number
-     - build-msi
     runs-on: windows-latest
     if: ${{ needs.set-version-number.outputs.is-release == 'true' }}
 
