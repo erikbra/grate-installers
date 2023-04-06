@@ -1,0 +1,60 @@
+name: Create installers
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  
+jobs:
+  set-version-number:
+    name: Set version number
+    runs-on: ubuntu-latest
+    outputs:
+      nuGetVersion: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
+      semVer: ${{ steps.gitversion.outputs.fullSemVer }}
+      is-release: ${{ steps.gitversion.outputs.CommitsSinceVersionSource == 0 }}
+    
+    steps:
+    - name: Setup .NET 7
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.10.2
+      with:
+        versionSpec: '5.x'
+    - name: Determine Version
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.10.2
+
+  build-winget:
+    name: Winget - Update package manifest in the OWC
+    needs:
+     - set-version-number
+     - build-msi
+    runs-on: windows-latest
+    if: ${{ needs.set-version-number.outputs.is-release == 'true' }}
+
+    steps:
+    - name: Winget-Create
+      run: |
+
+        $version = "$($env:version)"
+
+        # Download wingetcreate
+        iwr https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
+
+        $packageUrl="https://github.com/erikbra/grate/releases/download/$version/grate-$version.msi"
+
+        echo "Running ./wingetcreate.exe update erikbra.grate -u $packageUrl -v $version -t `"$env:WINGET_GH_PAT`" --submit"
+        ./wingetcreate.exe update erikbra.grate -u $packageUrl -v $version -t "$env:WINGET_GH_PAT" --submit
+      env:
+        WINGET_GH_PAT: ${{ secrets.WINGET_GH_PAT }}
+        version: "1.5.0"
+        #version: "${{ needs.set-version-number.outputs.nuGetVersion }}"
+
