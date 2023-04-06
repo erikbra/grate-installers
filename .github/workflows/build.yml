@@ -37,7 +37,7 @@ jobs:
     needs:
      - set-version-number
     runs-on: windows-latest
-    if: ${{ needs.set-version-number.outputs.is-release == 'true' }}
+    #if: ${{ needs.set-version-number.outputs.is-release == 'true' }}
 
     steps:
     - name: Winget-Create
