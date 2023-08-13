@@ -54,6 +54,6 @@ jobs:
         ./wingetcreate.exe update erikbra.grate -u $packageUrl -v $version -t "$env:WINGET_GH_PAT" --submit
       env:
         WINGET_GH_PAT: ${{ secrets.WINGET_GH_PAT }}
-        version: "1.5.1"
+        version: "1.5.2"
         #version: "${{ needs.set-version-number.outputs.nuGetVersion }}"
 
