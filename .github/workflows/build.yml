@@ -52,7 +52,8 @@ jobs:
         $arm64Url="https://github.com/erikbra/grate/releases/download/$version/grate-msi-win-arm64-$version.msi"
 
         echo "Running ./wingetcreate.exe update erikbra.grate --urls $x64Url $arm64Url -v $version -t `"$env:WINGET_GH_PAT`" "#--submit"
-        ./wingetcreate.exe update erikbra.grate --urls $x64Url $arm64Url -v $version -t "$env:WINGET_GH_PAT" #--submit
+        #./wingetcreate.exe update erikbra.grate --urls $x64Url $arm64Url -v $version -t "$env:WINGET_GH_PAT" #--submit
+        ./wingetcreate.exe new erikbra.grate --urls $x64Url $arm64Url -v $version -t "$env:WINGET_GH_PAT" #--submit
       env:
         WINGET_GH_PAT: ${{ secrets.WINGET_GH_PAT }}
         version: "1.5.2"
