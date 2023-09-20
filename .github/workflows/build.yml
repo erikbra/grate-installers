@@ -51,8 +51,14 @@ jobs:
         $x64Url="https://github.com/erikbra/grate/releases/download/$version/grate-msi-win-x64-$version.msi"
         $arm64Url="https://github.com/erikbra/grate/releases/download/$version/grate-msi-win-arm64-$version.msi"
 
+
+        # Updating a manifest is only supported with the same number of installer URLs.
         echo "Running ./wingetcreate.exe update erikbra.grate --urls $x64Url $arm64Url -v $version -t `"$env:WINGET_GH_PAT`" "#--submit"
         ./wingetcreate.exe update erikbra.grate --urls $x64Url $arm64Url -v $version -t "$env:WINGET_GH_PAT" #--submit
+
+        echo "Running ./wingetcreate.exe update erikbra.grate --urls $x64Url -v $version -t `"$env:WINGET_GH_PAT`" "--submit"
+        ./wingetcreate.exe update erikbra.grate --urls $x64Url -v $version -t "$env:WINGET_GH_PAT" --submit
+
       env:
         WINGET_GH_PAT: ${{ secrets.WINGET_GH_PAT }}
         version: "1.5.3"
