@@ -17,9 +17,9 @@ jobs:
     
     steps:
     - name: Setup .NET 8
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.100-rc.1.23463.5
+        dotnet-version: 8.0.x    
     - name: Checkout
       uses: actions/checkout@v4
       with:
@@ -61,6 +61,6 @@ jobs:
 
       env:
         WINGET_GH_PAT: ${{ secrets.WINGET_GH_PAT }}
-        version: "1.5.3"
+        version: "1.6.0"
         #version: "${{ needs.set-version-number.outputs.nuGetVersion }}"
 
