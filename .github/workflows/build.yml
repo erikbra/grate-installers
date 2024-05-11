@@ -61,6 +61,6 @@ jobs:
 
       env:
         WINGET_GH_PAT: ${{ secrets.WINGET_GH_PAT }}
-        version: "1.6.2"
+        version: "1.6.3"
         #version: "${{ needs.set-version-number.outputs.nuGetVersion }}"
 
